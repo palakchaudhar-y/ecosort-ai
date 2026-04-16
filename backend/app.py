@@ -6,8 +6,8 @@ import os
 
 app = Flask(__name__)
 
-# load model
-model = tf.keras.models.load_model("waste_model.h5")
+# Load model (correct path)
+model = tf.keras.models.load_model("backend/waste_model.h5")
 
 IMG_SIZE = 224
 
@@ -37,19 +37,16 @@ def predict():
     prediction = model.predict(image)
 
     prob = float(prediction[0][0])
-
     confidence = max(prob, 1 - prob)
 
     print("Raw probability:", prob)
     print("Confidence:", confidence)
 
     if confidence >= 0.70:
-
         if prob > 0.5:
             label = "non-biodegradable"
         else:
             label = "biodegradable"
-
     else:
         label = "uncertain"
 
@@ -61,6 +58,6 @@ def predict():
     })
 
 
+# IMPORTANT: only ONE run block
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
