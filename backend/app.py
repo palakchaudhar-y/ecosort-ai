@@ -7,7 +7,7 @@ import os
 app = Flask(__name__)
 
 # Load model (correct path)
-model = tf.keras.models.load_model("backend/waste_model.h5")
+model = tf.keras.models.load_model("backend/waste_model.h5", compile=False)
 
 IMG_SIZE = 224
 
