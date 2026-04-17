@@ -6,10 +6,12 @@ import os
 
 app = Flask(__name__)
 
+# ✅ FIX: use .keras model (NOT .h5)
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "model.keras")
-model = tf.keras.models.load_model(MODEL_PATH)
+model = tf.keras.models.load_model(MODEL_PATH, compile=False)
 
 IMG_SIZE = 224
+
 
 def preprocess_image(image):
     image = image.resize((IMG_SIZE, IMG_SIZE))
@@ -17,9 +19,11 @@ def preprocess_image(image):
     image = np.expand_dims(image, axis=0)
     return image
 
+
 @app.route("/")
 def home():
     return "EcoSort AI backend is running!"
+
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -30,6 +34,7 @@ def predict():
     image = Image.open(file).convert("RGB")
 
     image = preprocess_image(image)
+
     prediction = model.predict(image)
 
     prob = float(prediction[0][0])
@@ -44,6 +49,7 @@ def predict():
         "prediction": label,
         "confidence": confidence
     })
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
