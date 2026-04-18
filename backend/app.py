@@ -10,7 +10,7 @@ CORS(app)  # This allows your frontend to talk to this API
 
 # ✅ Using os.path.abspath to ensure the path is correct regardless of where it's run
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "model.keras")
+MODEL_PATH = os.path.join(BASE_DIR, "waste_model.h5")
 
 # Load model with a fallback for potential Keras 3 / Keras 2 mismatches
 try:
